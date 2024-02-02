@@ -114,7 +114,8 @@ const ProType: GraphQLObjectType = new GraphQLObjectType({
                         if (userSubscription) {
                             return post;
                         } else {
-                            return { ...post.dataValues, mediaURL: null };
+                            return { ...post.dataValues, mediaURL: 'https://i.postimg.cc/ncQcXwQw/the-blurred-819388-1280.webp' };
+                            // return { ...post.dataValues, mediaURL: null };
                         }
                     }
                 }));
