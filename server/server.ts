@@ -16,7 +16,11 @@ const app = express();
 // Enable cors with specific origins and credentials support
 app.use(
     cors({
-        origin: ["http://localhost:8081", "http://localhost:9009"],
+        origin: [
+            "http://localhost:8081",
+            "http://localhost:8080",
+            "http://localhost:9009"
+        ],
         credentials: true,
     })
 );
