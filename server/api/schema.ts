@@ -53,9 +53,15 @@ const SportType: GraphQLObjectType = new GraphQLObjectType({
         name: { type: GraphQLString },
         description: { type: GraphQLString },
         mediaURL: { type: GraphQLString },
-        CountPros: { type: GraphQLInt },
+        countPros: { type: GraphQLInt },
         createdAt: { type: GraphQLString },
-        updatedAt: { type: GraphQLString }
+        updatedAt: { type: GraphQLString },
+        pro: {
+            type: new GraphQLList(ProType),
+            resolve: (parent, args) => {
+                return Pro.findAll({ where: { sportId: parent.id } });
+            },
+        },
     }),
 });
 
@@ -180,18 +186,8 @@ const SubscriptionType: GraphQLObjectType = new GraphQLObjectType({
     name: 'Subscription',
     fields: () => ({
         id: { type: GraphQLID },
-        user: {
-            type: UserType,
-            resolve(parent) {
-                return User.findByPk(parent.userId);
-            },
-        },
-        plan: {
-            type: PlanType,
-            resolve(parent) {
-                return Plan.findByPk(parent.planId);
-            },
-        },
+        userId: { type: GraphQLID },
+        planId: { type: GraphQLID },
         status: { type: GraphQLString },
         startDate: { type: GraphQLString },
         endDate: { type: GraphQLString },
@@ -423,7 +419,34 @@ const RootQuery: GraphQLObjectType = new GraphQLObjectType({
     },
 });
 
+const Mutation = new GraphQLObjectType({
+    name: 'Mutation',
+    fields: {
+        addSubscription: {
+            type: SubscriptionType,
+            args: {
+                planId: { type: GraphQLID },
+            },
+            resolve(parent, args) {
+                const newSubscription = {
+                    id: Math.ceil(Math.random() * 1000),
+                    userId: 1,
+                    planId: args.planId,
+                    status: 'active',
+                    startDate: new Date(),
+                    endDate: new Date(),
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                };
+                return newSubscription;
+            },
+        },
+    },
+});
+
+
 const schema = new GraphQLSchema({
     query: RootQuery,
+    mutation: Mutation,
 })
 export default schema

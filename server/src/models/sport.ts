@@ -15,7 +15,7 @@ export const Sport = sequelize.define('Sports', {
     mediaURL: {
         type: DataTypes.STRING,
     },
-    CountPros: {
+    countPros: {
         type: DataTypes.INTEGER,
     }
 });
